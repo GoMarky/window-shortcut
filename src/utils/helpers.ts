@@ -1,3 +1,5 @@
+export const isMobileDevice = /Mobi/i.test(window.navigator.userAgent);
+
 export function sortStrings(array: string[]): void {
   array.sort((a, b) => {
     if (a < b) {

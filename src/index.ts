@@ -1,4 +1,4 @@
-import { sortStrings, toLowerCase, toUppercase } from './utils/helpers';
+import { isMobileDevice, sortStrings, toLowerCase, toUppercase } from './utils/helpers';
 import { IDisposable, toDisposable } from './utils/disposable';
 
 type ShortcutCallback<T = void> = (...args: any[]) => T;
@@ -76,6 +76,10 @@ class WindowShortcut implements IWindowShortcut {
   }
 
   private init(): void {
+    if (isMobileDevice) {
+      return console.warn(`[window-shortcut]: package doesn't work properly on mobile devices. Prevent init...`);
+    }
+
     window.addEventListener('keydown', this.onKeydown.bind(this))
   }
 
