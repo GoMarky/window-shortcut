@@ -1,3 +1,3 @@
-import { IWindowShortcut } from '@/index';
+import { IWindowShortcut } from './src/index';
 
 export default IWindowShortcut;
