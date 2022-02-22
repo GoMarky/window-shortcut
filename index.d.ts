@@ -1,3 +1,5 @@
 import { IWindowShortcut } from './src/index';
 
-export default IWindowShortcut;
+declare const windowShortcut: IWindowShortcut;
+
+export default windowShortcut;
