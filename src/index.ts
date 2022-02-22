@@ -1,5 +1,5 @@
 import { sortStrings, toLowerCase, toUppercase } from './utils/helpers';
-import { Disposable, IDisposable, toDisposable } from './utils/disposable';
+import { IDisposable, toDisposable } from './utils/disposable';
 
 type ShortcutCallback<T = void> = (...args: any[]) => T;
 
@@ -16,12 +16,16 @@ enum ServiceKey {
 
 const serviceKeyLowerCased = Object.values(ServiceKey).map((key) => toLowerCase(key));
 
-class WindowShortcut extends Disposable {
+export interface IWindowShortcut {
+  registerShortcut(accelerator: string, callback: ShortcutCallback): IDisposable;
+
+  clearAllShortcuts(): void;
+}
+
+class WindowShortcut implements IWindowShortcut {
   private readonly shortcuts: Map<string, Set<ShortcutCallback>> = new Map();
 
   constructor() {
-    super();
-
     this.init();
   }
 
@@ -37,6 +41,7 @@ class WindowShortcut extends Disposable {
       return undefined;
     }
 
+    // If was pressed only service key
     if (isPrimaryServiceKey) {
       return undefined;
     }
@@ -95,6 +100,10 @@ class WindowShortcut extends Disposable {
     }
 
     return toDisposable(() => acceleratorShortcuts.delete(callback));
+  }
+
+  public clearAllShortcuts(): void {
+    this.shortcuts.forEach((set) => set.clear());
   }
 }
 

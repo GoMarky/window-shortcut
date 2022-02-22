@@ -31,11 +31,17 @@
     "importHelpers": true,
     "pretty": true,
     "resolveJsonModule": true,
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ]
+    }
   },
   "include": [
     "*.ts",
     "*.tsx",
-    "src"
+    "src",
+    "demo"
   ],
   "exclude": [
     "node_modules"

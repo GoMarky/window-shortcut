@@ -9,11 +9,3 @@ export function toDisposable(func: () => void): IDisposable {
     },
   };
 }
-
-export abstract class Disposable implements IDisposable {
-  protected constructor() {}
-
-  public dispose(): void {
-    //
-  }
-}
