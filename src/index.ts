@@ -1,4 +1,4 @@
-import { isMobileDevice, sortStrings, toLowerCase, toUppercase } from './utils/helpers';
+import { isDev, isMobileDevice, sortStrings, toLowerCase, toUppercase } from './utils/helpers';
 import { IDisposable, toDisposable } from './utils/disposable';
 
 type ShortcutCallback<T = void> = (...args: any[]) => T;
@@ -16,6 +16,12 @@ enum ServiceKey {
 
 const serviceKeyLowerCased = Object.values(ServiceKey).map((key) => toLowerCase(key));
 
+const RESERVED_BROWSER_SHORTCUTS = [
+  'Meta+R',
+  'Ctrl+N',
+  'Ctrl+H',
+];
+
 export interface IWindowShortcut {
   registerShortcut(accelerator: string, callback: ShortcutCallback): IDisposable;
 
@@ -27,6 +33,10 @@ class WindowShortcut implements IWindowShortcut {
 
   constructor() {
     this.init();
+  }
+
+  private static isBrowserShortcut(accelerator: string): boolean {
+    return RESERVED_BROWSER_SHORTCUTS.includes(accelerator);
   }
 
   private static eventToAccelerator(event: KeyboardEvent): string | undefined {
@@ -71,6 +81,11 @@ class WindowShortcut implements IWindowShortcut {
 
     if (accelerator) {
       event.preventDefault();
+
+      if (isDev) {
+        console.warn(`Calling ${accelerator} shortcut.`);
+      }
+
       this.callByAccelerator(accelerator);
     }
   }
@@ -92,6 +107,10 @@ class WindowShortcut implements IWindowShortcut {
   }
 
   public registerShortcut(accelerator: string, callback: ShortcutCallback): IDisposable {
+    if (WindowShortcut.isBrowserShortcut(accelerator)) {
+      throw new TypeError(`You can't use system shortcut - ${accelerator}`);
+    }
+
     let acceleratorShortcuts: Set<ShortcutCallback>;
 
     if (this.shortcuts.has(accelerator)) {
