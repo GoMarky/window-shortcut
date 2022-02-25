@@ -80,13 +80,11 @@ class WindowShortcut implements IWindowShortcut {
     const accelerator = WindowShortcut.eventToAccelerator(event);
 
     if (accelerator) {
-      event.preventDefault();
-
       if (isDev) {
         console.warn(`Calling ${accelerator} shortcut.`);
       }
 
-      this.callByAccelerator(accelerator);
+      this.callByAccelerator(accelerator, event);
     }
   }
 
@@ -98,10 +96,11 @@ class WindowShortcut implements IWindowShortcut {
     window.addEventListener('keydown', this.onKeydown.bind(this))
   }
 
-  private callByAccelerator(accelerator: string): void {
+  private callByAccelerator(accelerator: string, event: Event): void {
     const callbacks = this.shortcuts.get(accelerator);
 
     if (callbacks?.size) {
+      event.preventDefault();
       callbacks.forEach((callback) => callback.call(undefined))
     }
   }
