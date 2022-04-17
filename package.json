@@ -22,6 +22,7 @@
     "build:browser": "cross-env NODE_ENV=production webpack --config config/webpack.config.browser.js --progress --hide-modules",
     "build:common": "cross-env NODE_ENV=production webpack --config config/webpack.config.common.js --progress --hide-modules",
     "prepublish": "npm run build",
+    "postinstall": "npm run build:common",
     "lint": "eslint ."
   },
   "repository": {
