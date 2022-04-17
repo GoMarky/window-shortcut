@@ -1,7 +1,9 @@
 import windowShortcut from '@/index';
 
-windowShortcut.registerShortcut('Ctrl+A', () => {
-  console.log('Ctrl+A pressed');
+const TEST_KEY = 'Tab!';
+
+windowShortcut.registerShortcut(TEST_KEY, () => {
+  console.log(`${TEST_KEY} pressed`);
 })
 
 

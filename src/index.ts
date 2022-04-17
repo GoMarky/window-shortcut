@@ -46,14 +46,18 @@ class WindowShortcut implements IWindowShortcut {
     const isServiceKeyWasPressed = shiftKey || altKey || ctrlKey || metaKey;
     const isPrimaryServiceKey = serviceKeyLowerCased.includes(toLowerCase(key));
 
-    // If no one from service keys were pressed, it is not a shortcut
-    if (!isServiceKeyWasPressed) {
-      return undefined;
-    }
+    const isForcedSingleKey = !key.endsWith('!');
 
-    // If was pressed only service key
-    if (isPrimaryServiceKey) {
-      return undefined;
+    if (!isForcedSingleKey) {
+      // If no one from service keys were pressed, it is not a shortcut
+      if (!isServiceKeyWasPressed) {
+        return undefined;
+      }
+
+      // If was pressed only service key
+      if (isPrimaryServiceKey) {
+        return undefined;
+      }
     }
 
     switch (true) {
@@ -72,6 +76,10 @@ class WindowShortcut implements IWindowShortcut {
     }
 
     sortStrings(parts);
+
+    if (isForcedSingleKey) {
+      return key + '!';
+    }
 
     return parts.join('+') + '+' + toUppercase(key);
   }
