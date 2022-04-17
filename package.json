@@ -1,7 +1,7 @@
 {
   "name": "@gomarky/window-shortcut",
   "description": "Register shortcuts",
-  "version": "1.0.14",
+  "version": "1.0.13",
   "author": "Andrew Slesarenko <swen295@gmail.com>",
   "keywords": [
     "key",
@@ -22,7 +22,6 @@
     "build:browser": "cross-env NODE_ENV=production webpack --config config/webpack.config.browser.js --progress --hide-modules",
     "build:common": "cross-env NODE_ENV=production webpack --config config/webpack.config.common.js --progress --hide-modules",
     "prepublish": "npm run build",
-    "postinstall": "npm run build:common",
     "lint": "eslint ."
   },
   "repository": {
