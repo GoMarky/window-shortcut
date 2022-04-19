@@ -46,7 +46,7 @@ class WindowShortcut implements IWindowShortcut {
     const isServiceKeyWasPressed = shiftKey || altKey || ctrlKey || metaKey;
     const isPrimaryServiceKey = serviceKeyLowerCased.includes(toLowerCase(key));
 
-    const isForcedSingleKey = !key.endsWith('!');
+    const isForcedSingleKey = key === 'Tab';
 
     if (!isForcedSingleKey) {
       // If no one from service keys were pressed, it is not a shortcut
