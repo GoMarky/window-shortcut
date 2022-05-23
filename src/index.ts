@@ -25,9 +25,13 @@ const ALLOWED_SHORTCUTS = [
   'Tab',
   'Meta+C',
   'Meta+V',
-] as const;
+  'Meta+Z',
+  'Meta+Shift+Z',
+  'Ctrl+Z',
+  'Ctrl+Shift+Z',
+];
 
-interface IWindowShortcut {
+export interface IWindowShortcut {
   registerShortcut(accelerator: PossibleShortcut, callback: ShortcutCallback): IDisposable;
 
   clearAllShortcuts(): void;
@@ -67,20 +71,10 @@ class WindowShortcut implements IWindowShortcut {
 
     const parts: string[] = [];
 
-    switch (true) {
-      case shiftKey:
-        parts.push(ServiceKey.Shift);
-        break;
-      case altKey:
-        parts.push(ServiceKey.Alt);
-        break;
-      case ctrlKey:
-        parts.push(ServiceKey.Ctrl);
-        break;
-      case metaKey:
-        parts.push(ServiceKey.Meta);
-        break;
-    }
+    if (shiftKey) parts.push(ServiceKey.Shift);
+    if (altKey) parts.push(ServiceKey.Alt);
+    if (ctrlKey) parts.push(ServiceKey.Ctrl);
+    if (metaKey) parts.push(ServiceKey.Meta);
 
     helpers.sortStrings(parts);
     parts.push(key);

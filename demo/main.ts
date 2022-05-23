@@ -1,11 +1,17 @@
 import windowShortcut from '@/index';
 
 const shortcuts = [
-  'Meta+C',
-  'Tab',
+  'Ctrl+C',
+  'Ctrl+V',
   'Meta+A',
   'Shift+Tab',
+  'Tab',
+  'Meta+C',
   'Meta+V',
+  'Meta+Z',
+  'Meta+Shift+Z',
+  'Ctrl+Z',
+  'Ctrl+Shift+Z',
 ];
 
 for (const accelerator of shortcuts) {
