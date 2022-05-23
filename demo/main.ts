@@ -1,13 +1,15 @@
 import windowShortcut from '@/index';
 
-const TEST_KEY_ONE = 'Meta+C';
+const shortcuts = [
+  'Meta+C',
+  'Tab',
+  'Meta+A',
+  'Shift+Tab',
+  'Meta+V',
+];
 
-windowShortcut.registerShortcut(TEST_KEY_ONE, () => {
-  console.log(`${TEST_KEY_ONE} pressed`);
-})
-
-const TEST_KEY_SECOND = 'Tab!';
-
-windowShortcut.registerShortcut(TEST_KEY_SECOND, () => {
-  console.log(`${TEST_KEY_SECOND} pressed`);
-})
+for (const accelerator of shortcuts) {
+  windowShortcut.registerShortcut(accelerator, (_) => {
+    console.log(`${accelerator} is pressed.`);
+  })
+}

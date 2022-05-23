@@ -16,6 +16,14 @@ export function sortStrings(array: string[]): void {
   })
 }
 
+export function capitalize(str?: string): string {
+  if (!str) {
+    return '';
+  }
+
+  return str[0].toUpperCase() + str.slice(1).toLowerCase();
+}
+
 export function toUppercase(str?: string): string {
   if (!str) {
     return '';

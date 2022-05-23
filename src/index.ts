@@ -1,7 +1,8 @@
-import { isDev, isMobileDevice, sortStrings, toLowerCase, toUppercase } from './utils/helpers';
+import * as helpers from './utils/helpers';
 import { IDisposable, toDisposable } from './utils/disposable';
 
-type ShortcutCallback<T = void> = (...args: any[]) => T;
+type ShortcutCallback<T = void> = (event: KeyboardEvent) => T;
+type PossibleShortcut = typeof ALLOWED_SHORTCUTS[number];
 
 enum ServiceKey {
   Shift = 'Shift',
@@ -14,16 +15,20 @@ enum ServiceKey {
   Meta = 'Meta',
 }
 
-const serviceKeyLowerCased = Object.values(ServiceKey).map((key) => toLowerCase(key));
+const serviceKeyLowerCased = Object.values(ServiceKey).map((key) => helpers.toLowerCase(key));
 
-const RESERVED_BROWSER_SHORTCUTS = [
-  'Meta+R',
-  'Ctrl+N',
-  'Ctrl+H',
-];
+const ALLOWED_SHORTCUTS = [
+  'Ctrl+C',
+  'Ctrl+V',
+  'Meta+A',
+  'Shift+Tab',
+  'Tab',
+  'Meta+C',
+  'Meta+V',
+] as const;
 
-export interface IWindowShortcut {
-  registerShortcut(accelerator: string, callback: ShortcutCallback): IDisposable;
+interface IWindowShortcut {
+  registerShortcut(accelerator: PossibleShortcut, callback: ShortcutCallback): IDisposable;
 
   clearAllShortcuts(): void;
 }
@@ -35,30 +40,32 @@ class WindowShortcut implements IWindowShortcut {
     this.init();
   }
 
-  private static isBrowserShortcut(accelerator: string): boolean {
-    return RESERVED_BROWSER_SHORTCUTS.includes(accelerator);
+  private logShortcut(accelerator: PossibleShortcut): void {
+    const container = document.querySelector('.app__log-section');
+    const el = document.createElement('div');
+
+    el.textContent = `Shortcut ${accelerator} was pressed...`;
+    container?.appendChild(el);
+
+    window.setTimeout(() => {
+      el.remove();
+    }, 10000);
   }
 
-  private static eventToAccelerator(event: KeyboardEvent): string | undefined {
+  private static isValidShortcut(accelerator: PossibleShortcut): boolean {
+    return ALLOWED_SHORTCUTS.includes(accelerator);
+  }
+
+  private static eventToAccelerator(event: KeyboardEvent): PossibleShortcut | undefined {
     const { shiftKey, altKey, ctrlKey, metaKey, key } = event;
-    const parts: string[] = [];
+    const isPrimaryServiceKey = serviceKeyLowerCased.includes(helpers.toLowerCase(key));
 
-    const isServiceKeyWasPressed = shiftKey || altKey || ctrlKey || metaKey;
-    const isPrimaryServiceKey = serviceKeyLowerCased.includes(toLowerCase(key));
-
-    const isForcedSingleKey = key === 'Tab';
-
-    if (!isForcedSingleKey) {
-      // If no one from service keys were pressed, it is not a shortcut
-      if (!isServiceKeyWasPressed) {
-        return undefined;
-      }
-
-      // If was pressed only service key
-      if (isPrimaryServiceKey) {
-        return undefined;
-      }
+    // If was pressed only service key
+    if (isPrimaryServiceKey) {
+      return undefined;
     }
+
+    const parts: string[] = [];
 
     switch (true) {
       case shiftKey:
@@ -75,47 +82,54 @@ class WindowShortcut implements IWindowShortcut {
         break;
     }
 
-    sortStrings(parts);
+    helpers.sortStrings(parts);
+    parts.push(helpers.toUppercase(key));
 
-    if (isForcedSingleKey) {
-      return key + '!';
+    const accelerator = parts.join('+') as PossibleShortcut;
+    const isTwoPartShortcut = accelerator.includes('+');
+
+    if (isTwoPartShortcut) {
+      return accelerator;
     }
 
-    return parts.join('+') + '+' + toUppercase(key);
+    return helpers.capitalize(accelerator) as PossibleShortcut;
   }
 
   private onKeydown(event: KeyboardEvent): void {
     const accelerator = WindowShortcut.eventToAccelerator(event);
 
-    if (accelerator) {
-      if (isDev) {
-        console.warn(`Calling ${accelerator} shortcut.`);
-      }
-
-      this.callByAccelerator(accelerator, event);
+    if (!accelerator) {
+      return;
     }
+
+    this.callByAccelerator(accelerator, event);
   }
 
   private init(): void {
-    if (isMobileDevice) {
+    if (helpers.isMobileDevice) {
       return console.warn(`[window-shortcut]: package doesn't work properly on mobile devices. Prevent init...`);
     }
 
     window.addEventListener('keydown', this.onKeydown.bind(this))
   }
 
-  private callByAccelerator(accelerator: string, event: Event): void {
+  private callByAccelerator(accelerator: PossibleShortcut, event: KeyboardEvent): void {
     const callbacks = this.shortcuts.get(accelerator);
 
     if (callbacks?.size) {
       event.preventDefault();
-      callbacks.forEach((callback) => callback.call(undefined))
+
+      if (helpers.isDev) {
+        this.logShortcut(accelerator);
+      }
+
+      callbacks.forEach((callback) => callback.call(undefined, event))
     }
   }
 
   public registerShortcut(accelerator: string, callback: ShortcutCallback): IDisposable {
-    if (WindowShortcut.isBrowserShortcut(accelerator)) {
-      throw new TypeError(`You can't use system shortcut - ${accelerator}`);
+    if (!WindowShortcut.isValidShortcut(accelerator as PossibleShortcut)) {
+      throw new TypeError(`You must use only valid shortcuts - ${accelerator}. See https://github.com/GoMarky/window-shortcut/blob/master/README.md`);
     }
 
     let acceleratorShortcuts: Set<ShortcutCallback>;
