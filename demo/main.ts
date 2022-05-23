@@ -10,6 +10,6 @@ const shortcuts = [
 
 for (const accelerator of shortcuts) {
   windowShortcut.registerShortcut(accelerator, (_) => {
-    console.log(`${accelerator} is pressed.`);
+    console.log(`${accelerator} is pressed. 🦄🦄🦄🦄🦄🦄🦄`);
   })
 }

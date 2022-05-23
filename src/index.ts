@@ -83,16 +83,16 @@ class WindowShortcut implements IWindowShortcut {
     }
 
     helpers.sortStrings(parts);
-    parts.push(helpers.toUppercase(key));
+    parts.push(key);
 
-    const accelerator = parts.join('+') as PossibleShortcut;
+    const accelerator = helpers.toLowerCase(parts.join('+')) as PossibleShortcut;
     const isTwoPartShortcut = accelerator.includes('+');
 
     if (isTwoPartShortcut) {
       return accelerator;
     }
 
-    return helpers.capitalize(accelerator) as PossibleShortcut;
+    return accelerator as PossibleShortcut;
   }
 
   private onKeydown(event: KeyboardEvent): void {
@@ -117,8 +117,6 @@ class WindowShortcut implements IWindowShortcut {
     const callbacks = this.shortcuts.get(accelerator);
 
     if (callbacks?.size) {
-      event.preventDefault();
-
       if (helpers.isDev) {
         this.logShortcut(accelerator);
       }
@@ -129,18 +127,22 @@ class WindowShortcut implements IWindowShortcut {
 
   public registerShortcut(accelerator: string, callback: ShortcutCallback): IDisposable {
     if (!WindowShortcut.isValidShortcut(accelerator as PossibleShortcut)) {
-      throw new TypeError(`You must use only valid shortcuts - ${accelerator}. See https://github.com/GoMarky/window-shortcut/blob/master/README.md`);
+      throw new TypeError(`
+        You must use only valid shortcuts - ${accelerator}. 
+        See https://github.com/GoMarky/window-shortcut/blob/master/README.md
+      `);
     }
 
     let acceleratorShortcuts: Set<ShortcutCallback>;
+    const normalizedAccelerator = helpers.toLowerCase(accelerator);
 
-    if (this.shortcuts.has(accelerator)) {
-      acceleratorShortcuts = this.shortcuts.get(accelerator) as Set<ShortcutCallback>;
+    if (this.shortcuts.has(normalizedAccelerator)) {
+      acceleratorShortcuts = this.shortcuts.get(normalizedAccelerator) as Set<ShortcutCallback>;
       acceleratorShortcuts.add(callback);
     } else {
       acceleratorShortcuts = new Set<ShortcutCallback>();
       acceleratorShortcuts.add(callback);
-      this.shortcuts.set(accelerator, acceleratorShortcuts);
+      this.shortcuts.set(normalizedAccelerator, acceleratorShortcuts);
     }
 
     return toDisposable(() => acceleratorShortcuts.delete(callback));
@@ -148,6 +150,7 @@ class WindowShortcut implements IWindowShortcut {
 
   public clearAllShortcuts(): void {
     this.shortcuts.forEach((set) => set.clear());
+    this.shortcuts.clear();
   }
 }
 
