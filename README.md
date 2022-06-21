@@ -7,6 +7,22 @@
 * via npm: `npm install @gomarky/window-shortcut --save`
 * via yarn: `yarn add @gomarky/window-shortcut`
 
+## :notebook: List of available shortcuts
+
+```javascript
+  'Ctrl+C',
+  'Ctrl+V',
+  'Meta+A',
+  'Shift+Tab',
+  'Tab',
+  'Meta+C',
+  'Meta+V',
+  'Meta+Z',
+  'Meta+Shift+Z',
+  'Ctrl+Z',
+  'Ctrl+Shift+Z',
+```
+
 ## :rocket: Usage
 
 ```javascript
@@ -20,6 +36,10 @@ windowShortcut.registerShortcut('Shift+B', () => {
   console.log('Shift+B pressed');
 });
 ```
+
+## :warning:
+
+> ⚠️ By default, at every shortcut execute, we prevent default behaviour of browser, by calling event.preventDefault()
 
 > ⚠️ Note: Available only on desktop devices. Mobile browsers/devices is not support. (Due they don't have keyboards =))
 ---
