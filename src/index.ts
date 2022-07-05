@@ -18,17 +18,18 @@ enum ServiceKey {
 const serviceKeyLowerCased = Object.values(ServiceKey).map((key) => helpers.toLowerCase(key));
 
 const ALLOWED_SHORTCUTS = [
-  'Ctrl+C',
-  'Ctrl+V',
   'Meta+A',
+  'Ctrl+A',
+  'Meta+C',
+  'Ctrl+C',
+  'Meta+V',
+  'Ctrl+V',
+  'Meta+Z',
+  'Ctrl+Z',
+  'Meta+Shift+Z',
+  'Ctrl+Shift+Z',
   'Shift+Tab',
   'Tab',
-  'Meta+C',
-  'Meta+V',
-  'Meta+Z',
-  'Meta+Shift+Z',
-  'Ctrl+Z',
-  'Ctrl+Shift+Z',
 ];
 
 export interface IWindowShortcut {
