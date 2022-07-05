@@ -10,17 +10,21 @@
 ## :notebook: List of available shortcuts
 
 ```javascript
+  // For all platform
+  'Ctrl+A',
   'Ctrl+C',
   'Ctrl+V',
-  'Meta+A',
-  'Shift+Tab',
-  'Tab',
-  'Meta+C',
-  'Meta+V',
-  'Meta+Z',
-  'Meta+Shift+Z',
   'Ctrl+Z',
   'Ctrl+Shift+Z',
+  'Shift+Tab',
+  'Tab',
+      
+  // For MacOS
+  'Meta+A',
+  'Meta+C', 
+  'Meta+V', 
+  'Meta+Z', 
+  'Meta+Shift+Z'
 ```
 
 ## :rocket: Usage
