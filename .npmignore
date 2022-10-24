@@ -4,7 +4,7 @@ demo
 src
 .babelrc
 .editorconfig
-.eslitignore
+.eslintignore
 .eslintrc.js
 .gitignore
 .nvmrc
