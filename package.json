@@ -1,7 +1,7 @@
 {
   "name": "@gomarky/window-shortcut",
   "description": "Register shortcuts",
-  "version": "1.0.22",
+  "version": "1.0.23",
   "author": "Andrew Slesarenko <swen295@gmail.com>",
   "keywords": [
     "key",
