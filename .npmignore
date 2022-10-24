@@ -1,2 +1,13 @@
 node_modules/
 config/
+demo
+src
+.babelrc
+.editorconfig
+.eslitignore
+.eslintrc.js
+.gitignore
+.nvmrc
+package-lock.json
+publish.sh
+tsconfig.json
