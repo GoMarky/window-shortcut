@@ -11,3 +11,5 @@ src
 package-lock.json
 publish.sh
 tsconfig.json
+.idea
+.vscode
