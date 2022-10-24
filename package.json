@@ -15,7 +15,7 @@
   "license": "MIT",
   "main": "dist/window-shortcut.common.js",
   "unpkg": "dist/window-shortcut.browser.js",
-  "module": "index.js",
+  "module": "dist/window-shortcut.common.js",
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack-dev-server --config config/webpack.config.demo.js",
     "build": "npm run build:browser && npm run build:common",
