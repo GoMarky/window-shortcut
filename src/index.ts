@@ -32,13 +32,7 @@ const ALLOWED_SHORTCUTS = [
   'Tab',
 ];
 
-export interface IWindowShortcut {
-  registerShortcut(accelerator: PossibleShortcut, callback: ShortcutCallback): IDisposable;
-
-  clearAllShortcuts(): void;
-}
-
-class WindowShortcut implements IWindowShortcut {
+class WindowShortcut {
   private readonly shortcuts: Map<string, Set<ShortcutCallback>> = new Map();
 
   constructor() {
