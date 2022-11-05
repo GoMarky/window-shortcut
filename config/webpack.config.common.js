@@ -7,7 +7,7 @@ module.exports = merge(base, {
   output: {
     path: path.resolve(__dirname, '../dist'),
     filename: outputFile + '.common.js',
-    libraryTarget: 'commonjs2',
+    libraryTarget: 'module',
   },
   target: 'node',
   externals: {},

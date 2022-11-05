@@ -3,6 +3,9 @@ const config = require('../package.json')
 const path = require('path');
 
 module.exports = {
+  experiments: {
+    outputModule: true,
+  },
   entry: './src/index.ts',
   module: {
     rules: [
