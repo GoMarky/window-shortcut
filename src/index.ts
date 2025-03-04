@@ -32,10 +32,14 @@ const ALLOWED_SHORTCUTS = [
   'Tab',
 ];
 
-class WindowShortcut {
+export class WindowShortcut {
   private readonly shortcuts: Map<string, Set<ShortcutCallback>> = new Map();
 
   constructor() {
+    if (!helpers.isClient) {
+      return;
+    }
+
     this.init();
   }
 
@@ -46,9 +50,7 @@ class WindowShortcut {
     el.textContent = `Shortcut ${accelerator} was pressed...`;
     container?.appendChild(el);
 
-    window.setTimeout(() => {
-      el.remove();
-    }, 10000);
+    window.setTimeout(() => el.remove(), 10000);
   }
 
   private static isValidShortcut(accelerator: PossibleShortcut): boolean {
@@ -66,10 +68,21 @@ class WindowShortcut {
 
     const parts: string[] = [];
 
-    if (shiftKey) parts.push(ServiceKey.Shift);
-    if (altKey) parts.push(ServiceKey.Alt);
-    if (ctrlKey) parts.push(ServiceKey.Ctrl);
-    if (metaKey) parts.push(ServiceKey.Meta);
+    if (shiftKey) {
+      parts.push(ServiceKey.Shift);
+    }
+
+    if (altKey) {
+      parts.push(ServiceKey.Alt);
+    }
+
+    if (ctrlKey) {
+      parts.push(ServiceKey.Ctrl);
+    }
+
+    if (metaKey) {
+      parts.push(ServiceKey.Meta);
+    }
 
     helpers.sortStrings(parts);
     parts.push(key);
@@ -96,7 +109,7 @@ class WindowShortcut {
 
   private init(): void {
     if (helpers.isMobileDevice) {
-      return console.warn(`[window-shortcut]: package doesn't work properly on mobile devices. Prevent init...`);
+      return;
     }
 
     window.addEventListener('keydown', this.onKeydown.bind(this))
@@ -142,5 +155,3 @@ class WindowShortcut {
     this.shortcuts.clear();
   }
 }
-
-export default new WindowShortcut();

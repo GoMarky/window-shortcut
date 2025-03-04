@@ -1,4 +1,4 @@
-import windowShortcut from '@/index';
+import {WindowShortcut} from '@/index';
 
 const shortcuts = [
   'Ctrl+C',
@@ -13,6 +13,8 @@ const shortcuts = [
   'Ctrl+Z',
   'Ctrl+Shift+Z',
 ];
+
+const windowShortcut = new WindowShortcut();
 
 for (const accelerator of shortcuts) {
   windowShortcut.registerShortcut(accelerator, (_) => {
