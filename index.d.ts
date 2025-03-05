@@ -5,12 +5,10 @@ declare interface IDisposable {
 declare type ShortcutCallback<T = void> = (event: KeyboardEvent) => T;
 declare type PossibleShortcut = string;
 
-declare interface IWindowShortcut {
+declare class WindowShortcut {
   registerShortcut(accelerator: PossibleShortcut, callback: ShortcutCallback): IDisposable;
 
   clearAllShortcuts(): void;
 }
 
-declare const windowShortcut: IWindowShortcut;
-
-export default windowShortcut;
+export default WindowShortcut;
