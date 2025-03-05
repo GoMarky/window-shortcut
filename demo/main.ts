@@ -1,4 +1,4 @@
-import {WindowShortcut} from '@/index';
+import WindowShortcut from '@/index';
 
 const shortcuts = [
   'Ctrl+C',
