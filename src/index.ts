@@ -32,7 +32,7 @@ const ALLOWED_SHORTCUTS = [
   'Tab',
 ];
 
-export class WindowShortcut {
+export default class WindowShortcut {
   private readonly shortcuts: Map<string, Set<ShortcutCallback>> = new Map();
 
   constructor() {
