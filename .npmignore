@@ -13,3 +13,4 @@ publish.sh
 tsconfig.json
 .idea
 .vscode
+build/
