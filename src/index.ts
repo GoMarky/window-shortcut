@@ -26,6 +26,8 @@ const ALLOWED_SHORTCUTS = [
   'Ctrl+V',
   'Meta+Z',
   'Ctrl+Z',
+  'Ctrl+W',
+  'Meta+W',
   'Meta+Shift+Z',
   'Ctrl+Shift+Z',
   'Shift+Tab',
