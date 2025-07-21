@@ -30,24 +30,30 @@
 ## :rocket: Usage
 
 ```javascript
-import windowShortcut from '@gomarky/window-shortcut'
+import WindowShortcut from '@gomarky/window-shortcut'
 
-windowShortcut.registerShortcut('Ctrl+A', () => {
+const instance = new WindowShortcut();
+
+instance.registerShortcut('Ctrl+A', () => {
   console.log('Ctrl+A pressed');
 })
 
-windowShortcut.registerShortcut('Shift+B', () => {
+instance.registerShortcut('Shift+B', () => {
   console.log('Shift+B pressed');
 });
+
+// when disposed, u cant use it anymore
+instance.dispose();
 ```
 
 ## :warning:
 
-> ⚠️ By default, at every shortcut execute, we prevent default behaviour of browser, by calling event.preventDefault()
+> ⚠️ By default, at every shortcut execute, we DO NOT prevent default behaviour of browser, by calling event.preventDefault().
+> Make sure, by doing it by yourself.
 
 > ⚠️ Note: Available only on desktop devices. Mobile browsers/devices is not support. (Due they don't have keyboards =))
 ---
 
 ## 🔓 License
 
-See the [LICENSE](LICENSE.md) file for license rights and limitations (MIT).
+See the [LICENSE](LICENSE) file for license rights and limitations (MIT).

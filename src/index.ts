@@ -18,6 +18,36 @@ enum ServiceKey {
 const serviceKeyLowerCased = Object.values(ServiceKey).map((key) => helpers.toLowerCase(key));
 
 const ALLOWED_SHORTCUTS = [
+  'Ctrl+D',
+  'Meta+D',
+  'Ctrl+O',
+  'Meta+O',
+  'Ctrl+P',
+  'Meta+P',
+  'Ctrl+X',
+  'Meta+X',
+  'Ctrl+Y',
+  'Meta+Y',
+  'Ctrl+J',
+  'Meta+J',
+  'Ctrl+U',
+  'Meta+U',
+  'Ctrl+I',
+  'Meta+I',
+  'Meta+Q',
+  'Ctrl+Q',
+  'Meta+E',
+  'Ctrl+E',
+  'Ctrl+B',
+  'Meta+B',
+  'Ctrl+P',
+  'Meta+P',
+  'Ctrl+N',
+  'Meta+N',
+  'Ctrl+T',
+  'Meta+T',
+  'Ctrl+F',
+  'Meta+F',
   'Meta+A',
   'Ctrl+A',
   'Meta+C',
@@ -30,8 +60,12 @@ const ALLOWED_SHORTCUTS = [
   'Meta+W',
   'Meta+S',
   'Ctrl+S',
-  'Meta+Shift+Z',
+  'Ctrl+Shift+A',
+  'Meta+Shift+A',
+  'Ctrl+Shift+D',
+  'Meta+Shift+D',
   'Ctrl+Shift+Z',
+  'Meta+Shift+Z',
   'Shift+Tab',
   'Tab',
 ];
@@ -40,7 +74,7 @@ export default class WindowShortcut {
   private readonly shortcuts: Map<string, Set<ShortcutCallback>> = new Map();
 
   constructor() {
-    if (!helpers.isClient) {
+    if (!helpers.isClient || helpers.isMobileDevice) {
       return;
     }
 
@@ -112,10 +146,6 @@ export default class WindowShortcut {
   }
 
   private init(): void {
-    if (helpers.isMobileDevice) {
-      return;
-    }
-
     window.addEventListener('keydown', this.onKeydown.bind(this))
   }
 
@@ -157,5 +187,10 @@ export default class WindowShortcut {
   public clearAllShortcuts(): void {
     this.shortcuts.forEach((set) => set.clear());
     this.shortcuts.clear();
+  }
+
+  public dispose(): void {
+    this.clearAllShortcuts();
+    window.removeEventListener('keydown', this.onKeydown.bind(this));
   }
 }
